@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "TypeSwift",
+        "repositoryURL": "https://github.com/GameSmash/TypeSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "ee5772bb6f4c05855b16e50d39f21623b0d7c0f5",
+          "version": "0.0.5"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
