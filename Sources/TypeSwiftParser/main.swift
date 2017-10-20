@@ -1,32 +1,29 @@
 import Foundation
 import TypeSwift
 
-let args = [String](CommandLine.arguments[1..<CommandLine.arguments.count])
-if args.count >= 2 {
-    let inputPath = args[0]
-    let outputPath = args[1]
+let fileManager = FileManager.`default`
+let path = fileManager.currentDirectoryPath
+let url = URL(fileURLWithPath: path)
 
-    if let url = URL(string: inputPath) {
+let enumerator: FileManager.DirectoryEnumerator = fileManager.enumerator(atPath: url.path)!
 
-        if let outputURL = URL(string: outputPath) {
-            print("attempting to write to outputURL")
-            do {
-                try TypeSwift.shared.convert(file: url, to: .swift, output: outputURL)
-            } catch {
-                if let err = error as? TypeScriptError {
-                    print(err.localizedDescription)
-                } else {
-                    print("UNKNOWN ERROR: \n\(error.localizedDescription)")
-                }
-            }
+while let element = enumerator.nextObject() as? String {
+    guard element.hasSuffix(".ts") else { continue }
+    do {
+        let fileURL = url.appendingPathComponent(element)
+
+        let outputURL = url.appendingPathComponent(element.replacingOccurrences(of: ".ts",
+                                                                                with: ".swift"))
+
+        try TypeSwift.shared.convert(file: fileURL, to: .swift, output: outputURL)
+
+    } catch {
+        if let err = error as? TypeScriptError {
+            print("PARSING ERROR: \(err.localizedDescription)")
         } else {
-            print("Failed to init outputURL")
+            print("UNKNOWN ERROR: \n\(error.localizedDescription)")
         }
-    } else {
-        print("Failed to init inputURL")
     }
-} else {
-    print("too few arguments: must be:\n\ntypeswiftparser \"inputPath\" \"outputPath\"\n")
 }
 
 
