@@ -11,7 +11,6 @@ if args.count >= 2 {
         if let outputURL = URL(string: outputPath) {
             print("attempting to write to outputURL")
             do {
-
                 try TypeSwift.shared.convert(file: url, to: .swift, output: outputURL)
             } catch {
                 if let err = error as? TypeScriptError {
