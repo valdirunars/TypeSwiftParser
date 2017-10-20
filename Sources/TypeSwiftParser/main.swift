@@ -25,5 +25,3 @@ while let element = enumerator.nextObject() as? String {
         }
     }
 }
-
-
