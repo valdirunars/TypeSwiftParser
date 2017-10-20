@@ -14,7 +14,11 @@ if args.count >= 2 {
 
                 try TypeSwift.shared.convert(file: url, to: .swift, output: outputURL)
             } catch {
-                print("ERROR: \n\(error.localizedDescription)")
+                if let err = error as? TypeScriptError {
+                    print(err.localizedDescription)
+                } else {
+                    print("UNKNOWN ERROR: \n\(error.localizedDescription)")
+                }
             }
         } else {
             print("Failed to init outputURL")
